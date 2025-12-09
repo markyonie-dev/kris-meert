@@ -1,20 +1,22 @@
 import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Download } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
-  { href: "#about", label: "About" },
-  { href: "#skills", label: "Skills" },
-  { href: "#experience", label: "Experience" },
-  { href: "#achievements", label: "Achievements" },
-  { href: "#certifications", label: "Credentials" },
-  { href: "#contact", label: "Contact" },
+  { href: "/about", label: "About" },
+  { href: "/skills", label: "Skills" },
+  { href: "/experience", label: "Experience" },
+  { href: "/achievements", label: "Achievements" },
+  { href: "/certifications", label: "Credentials" },
+  { href: "/contact", label: "Contact" },
 ];
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,21 +38,26 @@ const Navigation = () => {
       <div className="container px-4 md:px-8">
         <nav className="flex items-center justify-between">
           {/* Logo */}
-          <a href="#" className="font-serif text-2xl font-bold">
+          <Link to="/" className="font-serif text-2xl font-bold">
             <span className="text-foreground">K</span>
             <span className="text-gradient-gold">M</span>
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.href}
-                href={link.href}
-                className="text-sm text-muted-foreground hover:text-primary transition-colors font-medium"
+                to={link.href}
+                className={cn(
+                  "text-sm font-medium transition-colors",
+                  location.pathname === link.href
+                    ? "text-primary"
+                    : "text-muted-foreground hover:text-primary"
+                )}
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </div>
 
@@ -78,14 +85,19 @@ const Navigation = () => {
           <div className="lg:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-xl border-b border-border/50 py-6">
             <div className="container px-4 flex flex-col gap-4">
               {navLinks.map((link) => (
-                <a
+                <Link
                   key={link.href}
-                  href={link.href}
-                  className="text-foreground hover:text-primary transition-colors font-medium py-2"
+                  to={link.href}
+                  className={cn(
+                    "font-medium py-2 transition-colors",
+                    location.pathname === link.href
+                      ? "text-primary"
+                      : "text-foreground hover:text-primary"
+                  )}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {link.label}
-                </a>
+                </Link>
               ))}
               <Button variant="gold" className="mt-4" asChild>
                 <a href="/KRIS_PROFESSIONAL_RESUME.pdf" download>
